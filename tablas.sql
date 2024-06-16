@@ -9,19 +9,19 @@ CREATE TABLE Cliente (
     materno VARCHAR(50),
     fechNac DATE,
     estadoCivil VARCHAR(30),
-    RFC VARCHAR(13)
+    CURP VARCHAR(18)
 );
 
-INSERT INTO cliente (nombre, paterno, materno, fechNac, estadoCivil, RFC) VALUES
-    ('Asier', 'De la Vega', 'Cano', '2024-04-24', 'Soltero', 'TQJC930912VB9'),
-    ('Dylan', 'Guadarrama', 'Barbero', '1957-02-19', 'Casado', 'BYRK060728PW6'),
-    ('Xochitl', 'De la Cruz', 'Estrada', '1938-11-08', 'Casada', 'BYRK060728PW6'),
-    ('Juan', 'López', 'García', '1990-05-15', 'Soltero', 'LOPG900515123'),
-    ('María', 'Hernández', 'Martínez', '1985-08-25', 'Casada', 'HEMA850825123'),
-    ('José', 'González', 'Rodríguez', '1993-02-10', 'Soltero', 'GORJ930210123'),
-    ('Ana', 'Martínez', 'López', '1988-11-30', 'Divorciada', 'MALA881130123'),
-    ('Carlos', 'Pérez', 'Sánchez', '1980-04-20', 'Casado', 'PESC800420123'),
-    ('Laura', 'Gómez', 'Ramírez', '1995-09-05', 'Soltera', 'GORL950905123');;
+INSERT INTO cliente (nombre, paterno, materno, fechNac, estadoCivil, CURP) VALUES
+    ('Asier', 'De la Vega', 'Cano', '2024-04-24', 'Soltero', 'TQJC930912HDFVSN08'),
+    ('Dylan', 'Guadarrama', 'Barbero', '1957-02-19', 'Casado', 'BYRK060728HDFGRR09'),
+    ('Xochitl', 'De la Cruz', 'Estrada', '1938-11-08', 'Casada', 'BYRK060728HDFGRR09'),
+    ('Juan', 'López', 'García', '1990-05-15', 'Soltero', 'LOPG900515CCLCRD03'),
+    ('María', 'Hernández', 'Martínez', '1985-08-25', 'Casada', 'HEMA850825MMCMSR06'),
+    ('José', 'González', 'Rodríguez', '1993-02-10', 'Soltero', 'GORJ930210GRMDCN05'),
+    ('Ana', 'Martínez', 'López', '1988-11-30', 'Divorciada', 'MALA881130GRMRTN07'),
+    ('Carlos', 'Pérez', 'Sánchez', '1980-04-20', 'Casado', 'PESC800420HDFPRS08'),
+    ('Laura', 'Gómez', 'Ramírez', '1995-09-05', 'Soltera', 'GORL950905CMCMRL08');
 
 CREATE TABLE Promocion (
     codigoPromo INT PRIMARY KEY,
@@ -65,32 +65,44 @@ CREATE TABLE RelCteTarjeta(
 
 INSERT INTO relctetarjeta(idCte, idTarjeta) VALUES (1,1), (1,1), (2,2), (2,3);
 
-CREATE TABLE Direccion (
-    idDir INT PRIMARY KEY AUTO_INCREMENT,
-    calle VARCHAR(100),
-    colonia VARCHAR(60),
+CREATE TABLE Zona (
+    idZona INT PRIMARY KEY AUTO_INCREMENT,
     municipio VARCHAR(60),
-    estado VARCHAR(60),
-    nExt INT,
-    nInt INT
+    estado VARCHAR(60)
 );
 
-INSERT INTO direccion (calle, colonia, municipio, estado, nExt, nInt) VALUES ('Puerta Alfredo Mojica', 'Huatabambo', 'Homonimo', 'Sonora', 969, 0),
-                                                                             ('Guillermina', 'Hopelchen','Santa Rita', 'Campeche', 3, 294),
-                                                                             ('Rambla Glaciela Alcala', 'San Benito', 'Hermosillo', 'Sonora', 130, 12),
-                                                                             ('Arrabal Dorotea' , 'Morelos','Saltillo', 'Coahuila', 93, 239),
-                                                                             ('Quiroga', 'Los mangos', 'Tepalcatepec', 'Michoacan', 100, 0),
-                                                                             ('Calle Nayarit', 'Aviacion', 'Compostela', 'Nayarit', 45, 305),
-                                                                             ('Avenida Insurgentes Sur', 'Condesa', 'Cuauhtémoc', 'Ciudad de México', 123, 0),
-                                                                             ('Calle Reforma', 'Juárez', 'Cuauhtémoc', 'Ciudad de México', 456, 101),
-                                                                             ('Calle López Mateos', 'Chapultepec', 'Guadalajara', 'Jalisco', 789, 202),
-                                                                             ('Avenida Patria', 'Santa Tere', 'Guadalajara', 'Jalisco', 321, 0),
-                                                                             ('Boulevard Díaz Ordaz', 'Los Arcos', 'Monterrey', 'Nuevo León', 654, 303),
-                                                                             ('Avenida Juárez', 'Centro', 'Puebla', 'Puebla', 987, 404),
-                                                                             ('Calle 5 de Mayo', 'Centro', 'Querétaro', 'Querétaro', 432, 0),
-                                                                             ('Avenida Universidad', 'Jardines', 'Mérida', 'Yucatán', 876, 505),
-                                                                             ('Calle Francisco Villa', 'La Esperanza', 'León', 'Guanajuato', 543, 606),
-                                                                             ('Boulevard Belisario Domínguez', 'Zona Dorada', 'Tuxtla Gutiérrez', 'Chiapas', 210, 707);
+INSERT INTO Zona (municipio, estado) VALUES
+('Gustavo A. Madero', 'Ciudad de México'),
+('Ecatepec de Morelos', 'Estado de México'),
+('Guadalajara', 'Jalisco'),
+('Culiacán', 'Sinaloa');
+
+CREATE TABLE Direccion (
+    idDir INT PRIMARY KEY AUTO_INCREMENT,
+    idZona INT,
+    calle VARCHAR(100),
+    colonia VARCHAR(60),
+    nExt INT,
+    nInt INT,
+    FOREIGN KEY (idZona) REFERENCES Zona(idZona)
+);
+INSERT INTO Direccion (idZona, calle, colonia, nExt, nInt) VALUES
+(1, 'Calle Victoria', 'Colonia Lindavista', 100, 0),
+(1, 'Avenida Montevideo', 'Colonia Lindavista', 200, 1),
+(1, 'Calle Riobamba', 'Colonia Lindavista', 300, 2),
+(1, 'Avenida de los Insurgentes Norte', 'Colonia Guadalupe Tepeyac', 150, 0),
+(2, 'Calle San Juan de Aragón', 'Colonia Nueva Atzacoalco', 120, 0),
+(2, 'Avenida Gran Canal', 'Colonia Nueva Atzacoalco', 220, 1),
+(2, 'Calle León de los Aldama', 'Colonia Nueva Atzacoalco', 320, 2),
+(2, 'Avenida Río de los Remedios', 'Colonia Villa de Aragón', 130, 0),
+(3, 'Avenida Ceylán', 'Colonia Vallejo', 110, 0),
+(3, 'Calle Doctor Lavista', 'Colonia Vallejo', 210, 1),
+(3, 'Calle Norte 45', 'Colonia Vallejo', 310, 2),
+(3, 'Calle 9', 'Colonia I', 140, 0),
+(4, 'Calle Alfonso G. Calderón', 'Colonia Centro', 130, 0),
+(4, 'Av. Álvaro Obregón', 'Colonia Guadalupe Victoria', 230, 1),
+(4, 'Calle Melchor Ocampo', 'Colonia Miguel Hidalgo', 330, 2),
+(4, 'Blvd. Dr. Mora', 'Colonia Jorge Almada', 430, 0);
 
 SELECT * FROM direccion;
 CREATE TABLE TipoContacto (
@@ -145,19 +157,42 @@ CREATE TABLE Repartidor (
     fechNac DATE,
     estadoCivil VARCHAR(20),
     zonaActual INT,
-    fechaZona DATE
+    fechaZona DATE,
+    FOREIGN KEY (zonaActual) REFERENCES Zona(idZona)
 );
+
+INSERT INTO repartidor (rfc, nombre, paterno, materno, fechnac, estadocivil, zonaactual, fechazona) VALUES
+('REPA123456789', 'Juan', 'González', 'López', '1990-03-15', 'Soltero', 1, '2023-01-15'),
+('REPA987654321', 'María', 'Martínez', 'Hernández', '1985-07-25', 'Casada', 2, '2023-02-20'),
+('REPA567890123', 'Pedro', 'Sánchez', 'Gómez', '1993-11-10', 'Soltero', 3, '2023-03-10'),
+('REPA456789012', 'Laura', 'Pérez', 'Ramírez', '1988-09-30', 'Divorciada', 1, '2023-04-05'),
+('REPA234567890', 'Carlos', 'López', 'Rodríguez', '1980-05-20', 'Casado', 2, '2023-05-15');
 
 
 
 CREATE TABLE pedido (
     idPedido INT PRIMARY KEY AUTO_INCREMENT,
     idRepartidor INT,
-    costoTotal FLOAT,
-    conRepartidor BOOL,
+    costoTotal FLOAT DEFAULT 0,
+    conRepartidor BOOL DEFAULT FALSE,
     tiempoEntrega VARCHAR(6),
-    fechaRegistro DATE
+    fechaRegistro DATE DEFAULT (curdate()),
+    FOREIGN KEY (idRepartidor) REFERENCES repartidor(idRepartidor)
 );
+
+INSERT INTO pedido (idRepartidor, tiempoEntrega, fechaRegistro) VALUES (1, '2 días', '2023-05-10'),
+(1, '1 día', '2024-06-08'),
+(1, '3 días', '2024-07-12'),
+(2, '2 días', '2024-05-09'),
+(2, '1 día', '2024-06-11'),
+(3, '2 días', '2024-04-07'),
+(3, '1 día', '2024-07-13'),
+(3, '3 días', '2024-08-10'),
+(4, '2 días', '2024-06-06'),
+(4, '1 día', '2024-09-14'),
+(5, '2 días', '2024-08-05'),
+(5, '1 día', '2024-10-15'),
+(5, '3 días', '2024-11-09');
 
 CREATE TABLE RelCtePedido (
     idRelCtePedido INT PRIMARY KEY AUTO_INCREMENT,
@@ -166,6 +201,22 @@ CREATE TABLE RelCtePedido (
     concepto VARCHAR(30),
     resenapedido FLOAT
 );
+
+INSERT INTO relctepedido (idCte, idPedido, concepto, resenapedido) VALUES
+(1, 1, 'Pedido 1', 3),
+(1, 2, 'Pedido 2', 4),
+(1, 3, 'Pedido 3', 2),
+(2, 4, 'Pedido 4', 1),
+(2, 5, 'Pedido 5', 5),
+(3, 6, 'Pedido 6', 3),
+(3, 7, 'Pedido 7', 0),
+(3, 8, 'Pedido 8', 4),
+(4, 9, 'Pedido 9', 2),
+(4, 10, 'Pedido 10', 5),
+(5, 11, 'Pedido 11', 1),
+(5, 12, 'Pedido 12', 3);
+
+
 
 CREATE TABLE ContactoRep (
     idCtoRep INT PRIMARY KEY AUTO_INCREMENT,
@@ -176,6 +227,46 @@ CREATE TABLE ContactoRep (
     FOREIGN KEY (idRepartidor) REFERENCES Repartidor(idRepartidor)
 );
 
+INSERT INTO ContactoRep (idRepartidor, idTipoCto, descripcion) VALUES
+(1, 1, 'asier.repartidor@example.com'),
+(1, 2, '555-1234'),
+(1, 3, 'https://www.asierblog.com'),
+(1, 4, 'asier.skype'),
+(1, 5, 'asier#1234');
+
+
+INSERT INTO ContactoRep (idRepartidor, idTipoCto, descripcion) VALUES
+(2, 1, 'dylan.repartidor@example.com'),
+(2, 2, '555-5678'),
+(2, 3, 'https://www.dylanblog.com'),
+(2, 4, 'dylan.skype'),
+(2, 5, 'dylan#5678');
+
+-- Para el repartidor 3
+INSERT INTO ContactoRep (idRepartidor, idTipoCto, descripcion) VALUES
+(3, 1, 'xochitl.repartidor@example.com'),
+(3, 2, '555-9012'),
+(3, 3, 'https://www.xochitlblog.com'),
+(3, 4, 'xochitl.skype'),
+(3, 5, 'xochitl#9012');
+
+-- Para el repartidor 4
+INSERT INTO ContactoRep (idRepartidor, idTipoCto, descripcion) VALUES
+(4, 1, 'juan.repartidor@example.com'),
+(4, 2, '555-3456'),
+(4, 3, 'https://www.juanblog.com'),
+(4, 4, 'juan.skype'),
+(4, 5, 'juan#3456');
+
+-- Para el repartidor 5
+INSERT INTO ContactoRep (idRepartidor, idTipoCto, descripcion) VALUES
+(5, 1, 'maria.repartidor@example.com'),
+(5, 2, '555-7890'),
+(5, 3, 'https://www.mariablog.com'),
+(5, 4, 'maria.skype'),
+(5, 5, 'maria#7890');
+
+
 CREATE TABLE RelDirRep (
     idRelDirRep INT PRIMARY KEY AUTO_INCREMENT,
     idDir INT,
@@ -185,10 +276,24 @@ CREATE TABLE RelDirRep (
     FOREIGN KEY (idRepartidor) REFERENCES Repartidor(idRepartidor)
 );
 
+INSERT INTO RelDirRep (idDir, idRepartidor, descripcion) VALUES
+(1, 1, 'Dirección principal de Juan'), (2, 1, 'Segunda dirección de Juan'), (11, 1, 'Tercera dirección de Juan'),
+(9, 2, 'Dirección principal de María'), (10, 2, 'Segunda dirección de María'), (12, 2, 'Tercera dirección de María'),
+(7, 3, 'Dirección principal de Pedro'), (8, 3, 'Segunda dirección de Pedro'), (13, 3, 'Tercera dirección de Pedro'),
+(1, 4, 'Dirección principal de Laura'), (3, 4, 'Segunda dirección de Laura'), (14, 4, 'Tercera dirección de Laura'),
+(2, 5, 'Dirección principal de Carlos'), (4, 5, 'Segunda dirección de Carlos'), (15, 5, 'Tercera dirección de Carlos');
+
+
 CREATE TABLE Ruta (
     idRuta INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50)
 );
+
+INSERT INTO Ruta (nombre) VALUES
+('Ruta A'),
+('Ruta B'),
+('Ruta C');
+
 
 CREATE TABLE RelRutaDir (
     idRelRutaDir INT PRIMARY KEY AUTO_INCREMENT,
@@ -203,6 +308,20 @@ CREATE TABLE Categoria (
     nombre VARCHAR(50),
     imagen VARCHAR(255)
 );
+INSERT INTO Categoria (nombre, imagen) VALUES
+('Categoría 1', '/directorios/imagen1.jpg'),
+('Categoría 2', '/directorios/imagen2.jpg'),
+('Categoría 3', '/directorios/imagen3.jpg'),
+('Categoría 4', '/directorios/imagen4.jpg');
+
+
+CREATE TABLE Proveedor (
+    idProv INT PRIMARY KEY AUTO_INCREMENT,
+    RFC VARCHAR(13),
+    nombre VARCHAR(50),
+    paterno VARCHAR(50),
+    materno VARCHAR(50)
+);
 
 CREATE TABLE Producto (
     idProducto INT PRIMARY KEY AUTO_INCREMENT,
@@ -213,15 +332,8 @@ CREATE TABLE Producto (
     costoUnitario FLOAT,
     marca VARCHAR(30),
     demanda INT,
-    FOREIGN KEY (idCategoria) REFERENCES Categoria(idCategoria)
-);
-
-CREATE TABLE Proveedor (
-    idProv INT PRIMARY KEY AUTO_INCREMENT,
-    RFC VARCHAR(13),
-    nombre VARCHAR(50),
-    paterno VARCHAR(50),
-    materno VARCHAR(50)
+    FOREIGN KEY (idCategoria) REFERENCES Categoria(idCategoria),
+    FOREIGN KEY (idProveedor) REFERENCES Proveedor(idProv)
 );
 
 CREATE TABLE RelPedProv (
@@ -259,6 +371,52 @@ CREATE TABLE ContactoProv (
     FOREIGN KEY (idTipoCto) REFERENCES TipoContacto(idTipoCto)
 );
 
+-- Proveedor 1
+INSERT INTO Proveedor (RFC, nombre, paterno, materno) VALUES
+('PROV123456789', 'Juan', 'Pérez', 'Gómez');
+
+INSERT INTO RelDirProv (idDir, idProv, descripcion) VALUES
+(1, 1, 'Dirección principal de Juan'),
+(2, 1, 'Segunda dirección de Juan');
+
+INSERT INTO ContactoProv (idTipoCto, idProv, descripcion) VALUES
+(1, 1, 'juan.perez@email.com'),
+(2, 1, '555-1234'),
+(3, 1, 'juan.skype.id');
+
+-- Proveedor 2
+INSERT INTO Proveedor (RFC, nombre, paterno, materno) VALUES
+('PROV987654321', 'María', 'Gómez', 'Martínez');
+
+INSERT INTO RelDirProv (idDir, idProv, descripcion) VALUES
+(3, 2, 'Dirección principal de María'),
+(4, 2, 'Segunda dirección de María');
+
+INSERT INTO ContactoProv (idTipoCto, idProv, descripcion) VALUES
+(1, 2, 'maria.gomez@email.com'),
+(2, 2, '555-5678'),
+(3, 2, 'maria.skype.id');
+
+-- Proveedor 3
+INSERT INTO Proveedor (RFC, nombre, paterno, materno) VALUES
+('PROV567890123', 'Pedro', 'López', 'Sánchez');
+
+INSERT INTO RelDirProv (idDir, idProv, descripcion) VALUES
+(1, 3, 'Dirección principal de Pedro'),
+(5, 3, 'Segunda dirección de Pedro');
+
+INSERT INTO ContactoProv (idTipoCto, idProv, descripcion) VALUES
+(1, 3, 'pedro.lopez@email.com'),
+(2, 3, '555-9012'),
+(3, 3, 'pedro.skype.id');
+
+INSERT INTO Producto (idProveedor, idCategoria, nombre, descripcion, costoUnitario, marca, demanda) VALUES
+(1, 1, 'Producto A', 'Descripción del Producto A', 100.50, 'Marca A', 50),
+(2, 2, 'Producto B', 'Descripción del Producto B', 75.25, 'Marca B', 80),
+(3, 3, 'Producto C', 'Descripción del Producto C', 120.75, 'Marca C', 60),
+(1, 2, 'Producto D', 'Descripción del Producto D', 90.00, 'Marca D', 45),
+(2, 1, 'Producto E', 'Descripción del Producto E', 85.50, 'Marca E', 70);
+
 CREATE TABLE RelPedProd (
     idRelPedProd INT PRIMARY KEY AUTO_INCREMENT,
     idPedido INT,
@@ -268,6 +426,22 @@ CREATE TABLE RelPedProd (
     FOREIGN KEY (idPedido) REFERENCES pedido(idPedido),
     FOREIGN KEY (idProducto) REFERENCES producto(idProducto)
 );
+
+INSERT INTO RelPedProd (idPedido, idProducto)
+VALUES
+(1, 1), (1, 2),
+(2, 1), (2, 3),
+(3, 2), (3, 4),
+(4, 1), (4, 5),
+(5, 3),
+(6, 2), (6, 4),
+(7, 1),
+(8, 3),
+(9, 5),
+(10, 1),
+(11, 2),
+(12, 4),
+(13, 3);
 
 CREATE TABLE RelRutaRepartidor (
     idRelRutRep INT PRIMARY KEY AUTO_INCREMENT,
