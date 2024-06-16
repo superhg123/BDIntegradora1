@@ -130,4 +130,41 @@ BEGIN
 END;
 // DELIMITER ;
 
+DELIMITER  //
+CREATE PROCEDURE sp_iniciar_pedido(IN idRep INT, IN newIdCte INT, IN newConcepto VARCHAR(20),IN newtiempoEntrega VARCHAR(20), IN newfechEntrega DATE)
+BEGIN
+    DECLARE newIdPed INT;
+    DECLARE resultado VARCHAR(40);
+    INSERT INTO pedido (idRepartidor, tiempoEntrega, fechaEntrega) VALUES (idRep, newtiempoEntrega, newfechEntrega);
+    SET newIdPed = (SELECT max(pedido.idPedido) FROM pedido);
+    INSERT INTO relctepedido (idCte, idPedido, concepto) VALUES (newIdCte, newIdPed, newConcepto);
+    SET resultado = 'Registrado';
+    SELECT resultado;
+END;
+// DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE sp_actualizar_pedido(IN newidRep INT, IN newIdCte INT, IN newConcepto VARCHAR(20), IN newTiempoEntrega VARCHAR(20), IN newFechaEntrega DATE, IN idRCP INT, IN idPed INT)
+BEGIN
+    IF (SELECT pedido.idPedido FROM pedido WHERE idPedido = idPed) IS NOT NULL AND (SELECT relctepedido.idRelCtePedido FROM relctepedido WHERE idRelCtePedido = idRCP) IS NOT NULL THEN
+        UPDATE pedido SET idRepartidor = newidRep, tiempoEntrega = newTiempoEntrega, fechaEntrega = newFechaEntrega WHERE idPedido = idPed;
+        UPDATE relctepedido SET idCte = newIdCte, idPedido = idPed, concepto = newConcepto WHERE idRelCtePedido = idRCP;
+        SELECT ('Pedido Actualizado') AS Resultado;
+    ELSE
+        SELECT ('Los identificadores no existen en los pedidos') AS Resultado;
+    end if;
+END ;
+// DELIMITER ;
+DESC relpedprod;
+;
+DELIMITER //
+CREATE PROCEDURE sp_agregar_producto (IN nombreProducto VARCHAR(40),IN  newIdPedido INT, IN cantidad INT)
+BEGIN
+    IF (SELECT producto.idProducto FROM producto WHERE nombre = nombreProducto) IS NOT NULL THEN
+        IF(SELECT count(cantidadExistente) FROM relpedprov WHERE idProducto = (SELECT idProducto FROM producto WHERE nombre = nombreProducto) GROUP BY idProducto - cantidad > 0 ) THEN
+            INSERT INTO relpedprod (idPedido, idProducto) VALUES (newIdPedido, (SELECT idProducto FROM producto WHERE nombre = nombreProducto));
+        end if;
+    end if;
+end;
+
+// DELIMITER ;

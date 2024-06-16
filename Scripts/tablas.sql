@@ -177,22 +177,23 @@ CREATE TABLE pedido (
     conRepartidor BOOL DEFAULT FALSE,
     tiempoEntrega VARCHAR(6),
     fechaRegistro DATE DEFAULT (curdate()),
+    fechaEntrega DATE,
     FOREIGN KEY (idRepartidor) REFERENCES repartidor(idRepartidor)
 );
 
-INSERT INTO pedido (idRepartidor, tiempoEntrega, fechaRegistro) VALUES (1, '2 días', '2023-05-10'),
-(1, '1 día', '2024-06-08'),
-(1, '3 días', '2024-07-12'),
-(2, '2 días', '2024-05-09'),
-(2, '1 día', '2024-06-11'),
-(3, '2 días', '2024-04-07'),
-(3, '1 día', '2024-07-13'),
-(3, '3 días', '2024-08-10'),
-(4, '2 días', '2024-06-06'),
-(4, '1 día', '2024-09-14'),
-(5, '2 días', '2024-08-05'),
-(5, '1 día', '2024-10-15'),
-(5, '3 días', '2024-11-09');
+INSERT INTO pedido (idRepartidor, tiempoEntrega, fechaRegistro, fechaEntrega) VALUES (1, '2 días', '2023-05-10', null),
+(1, '1 día', '2024-06-08', '2024-10-20'),
+(1, '3 días', '2024-07-12', '2024-08-08'),
+(2, '2 días', '2024-05-09', NULL),
+(2, '1 día', '2024-06-11', null),
+(3, '2 días', '2024-04-07', null),
+(3, '1 día', '2024-07-13', null),
+(3, '3 días', '2024-08-10', null),
+(4, '2 días', '2024-06-06', null),
+(4, '1 día', '2024-09-14', null),
+(5, '2 días', '2024-08-05', null),
+(5, '1 día', '2024-10-15', null),
+(5, '3 días', '2024-11-09', null);
 
 CREATE TABLE RelCtePedido (
     idRelCtePedido INT PRIMARY KEY AUTO_INCREMENT,
@@ -336,7 +337,7 @@ CREATE TABLE Producto (
     FOREIGN KEY (idCategoria) REFERENCES Categoria(idCategoria),
     FOREIGN KEY (idProveedor) REFERENCES Proveedor(idProv)
 );
-
+SELECT * FROM proveedor;
 CREATE TABLE RelPedProv (
     idRelPedProv INT PRIMARY KEY AUTO_INCREMENT,
     idProveedor INT,
@@ -417,6 +418,24 @@ INSERT INTO Producto (idProveedor, idCategoria, nombre, descripcion, costoUnitar
 (3, 3, 'Producto C', 'Descripción del Producto C', 120.75, 'Marca C', 60),
 (1, 2, 'Producto D', 'Descripción del Producto D', 90.00, 'Marca D', 45),
 (2, 1, 'Producto E', 'Descripción del Producto E', 85.50, 'Marca E', 70);
+
+-- Proveedor 1
+INSERT INTO RelPedProv (idProveedor, idProducto, cantidadExistente) VALUES
+(1, 1, 100),
+(1, 2, 50),
+(1, 3, 75);
+
+-- Proveedor 2
+INSERT INTO RelPedProv (idProveedor, idProducto, cantidadExistente) VALUES
+(2, 2, 30),
+(2, 4, 20),
+(2, 5, 40);
+
+-- Proveedor 3
+INSERT INTO RelPedProv (idProveedor, idProducto, cantidadExistente) VALUES
+(3, 1, 80),
+(3, 3, 60),
+(3, 5, 35);
 
 CREATE TABLE RelPedProd (
     idRelPedProd INT PRIMARY KEY AUTO_INCREMENT,
