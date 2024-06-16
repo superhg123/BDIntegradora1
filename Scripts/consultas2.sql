@@ -19,18 +19,6 @@ FROM Categoria c JOIN Producto p ON c.idCategoria = p.idCategoria
 WHERE p.demanda = (SELECT MAX(demanda) FROM Producto p2 WHERE p2.idCategoria = p.idCategoria);
 
 
-SELECT
-    idCategoria,
-    nombre_categoria AS categoria,
-    idProducto,
-    nombre_producto AS producto,
-    total_pedidos
-FROM
-    ProductosOrdenados
-WHERE
-    rn = 1;
-
-
 /*4. Obtener todos los pedidos registrados del mes de MARZO DE 2024 al mes de ABRIL DE 2024.*/
 SELECT p.idPedido, p.idRepartidor, p.costoTotal, p.conRepartidor, p.tiempoEntrega, p.fechaRegistro FROM pedido p
 WHERE p.fechaRegistro >= '2024-03-01 00:00:00' AND p.fechaRegistro <= '2024-04-30 23:59:59';
