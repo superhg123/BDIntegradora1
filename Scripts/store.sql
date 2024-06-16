@@ -166,5 +166,18 @@ BEGIN
         end if;
     end if;
 end;
+// DELIMITER ;
 
+desc producto;
+
+DELIMITER //
+CREATE PROCEDURE sp_agregar_producto(IN idProv INT, IN idCat INT, IN newNombre VARCHAR(50), IN descr VARCHAR(50), IN precio FLOAT, IN newMarca VARCHAR(20))
+BEGIN
+    IF(SELECT producto.idProducto FROM producto WHERE nombre = newNombre) IS NULL THEN
+    INSERT INTO producto (idProveedor, idCategoria, nombre, descripcion, costoUnitario, marca, demanda) VALUES (idProv, idCat, newNombre, descr, precio, newMarca, 0);
+    SELECT ('Producto registrado con exito') AS Resultado;
+    ELSE
+    SELECT ('Producto ya existe') AS Resultado;
+    END IF;
+end;
 // DELIMITER ;

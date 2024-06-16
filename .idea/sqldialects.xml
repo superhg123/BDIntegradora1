@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/Scripts/Consultas.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/Scripts/store.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/Scripts/tablas.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/Scripts/view.sql" dialect="MySQL" />
   </component>
 </project>
