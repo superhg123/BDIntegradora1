@@ -178,22 +178,26 @@ CREATE TABLE pedido (
     tiempoEntrega VARCHAR(6),
     fechaRegistro DATE DEFAULT (curdate()),
     fechaEntrega DATE,
-    FOREIGN KEY (idRepartidor) REFERENCES repartidor(idRepartidor)
+    idDireccion INT,
+    horaSolicitud TIME DEFAULT (now()),
+    FOREIGN KEY (idRepartidor) REFERENCES repartidor(idRepartidor),
+    FOREIGN KEY (idDireccion) REFERENCES direccion(idDir)
 );
 
-INSERT INTO pedido (idRepartidor, tiempoEntrega, fechaRegistro, fechaEntrega) VALUES (1, '2 días', '2023-05-10', null),
-(1, '1 día', '2024-06-08', '2024-10-20'),
-(1, '3 días', '2024-07-12', '2024-08-08'),
-(2, '2 días', '2024-05-09', NULL),
-(2, '1 día', '2024-06-11', null),
-(3, '2 días', '2024-04-07', null),
-(3, '1 día', '2024-07-13', null),
-(3, '3 días', '2024-08-10', null),
-(4, '2 días', '2024-06-06', null),
-(4, '1 día', '2024-09-14', null),
-(5, '2 días', '2024-08-05', null),
-(5, '1 día', '2024-10-15', null),
-(5, '3 días', '2024-11-09', null);
+INSERT INTO pedido (idRepartidor, tiempoEntrega, fechaRegistro, fechaEntrega, idDireccion) VALUES
+(1, '2 días', '2023-05-10', null,1),
+(1, '1 día', '2024-06-08', '2024-10-20', 1),
+(1, '3 días', '2024-07-12', '2024-08-08', 1),
+(2, '2 días', '2024-05-09', NULL, 2),
+(2, '1 día', '2024-06-11', null, 3),
+(3, '2 días', '2024-04-07', null, 5),
+(3, '1 día', '2024-07-13', null, 10),
+(3, '3 días', '2024-08-10', null, 11),
+(4, '2 días', '2024-06-06', null, 13),
+(4, '1 día', '2024-09-14', null,14),
+(5, '2 días', '2024-08-05', null, 15),
+(5, '1 día', '2024-10-15', null, 16),
+(5, '3 días', '2024-11-09', null, 8);
 
 CREATE TABLE RelCtePedido (
     idRelCtePedido INT PRIMARY KEY AUTO_INCREMENT,
@@ -443,25 +447,26 @@ CREATE TABLE RelPedProd (
     idProducto INT,
     reseniaEntrega FLOAT,
     reseniaCalidad FLOAT,
+    cantidad INT,
     FOREIGN KEY (idPedido) REFERENCES pedido(idPedido),
     FOREIGN KEY (idProducto) REFERENCES producto(idProducto)
 );
 
-INSERT INTO RelPedProd (idPedido, idProducto)
+INSERT INTO RelPedProd (idPedido, idProducto, cantidad)
 VALUES
-(1, 1), (1, 2),
-(2, 1), (2, 3),
-(3, 2), (3, 4),
-(4, 1), (4, 5),
-(5, 3),
-(6, 2), (6, 4),
-(7, 1),
-(8, 3),
-(9, 5),
-(10, 1),
-(11, 2),
-(12, 4),
-(13, 3);
+(1, 1, 2), (1, 2, 3),
+(2, 1, 3), (2, 3, 4),
+(3, 2, 8), (3, 4, 5),
+(4, 1, 4), (4, 5, 5),
+(5, 3, 7),
+(6, 2,9), (6, 4,4),
+(7, 1,7),
+(8, 3,3),
+(9, 5,2),
+(10, 1,1),
+(11, 2,6),
+(12, 4,4),
+(13, 3,9);
 
 CREATE TABLE RelRutaRepartidor (
     idRelRutRep INT PRIMARY KEY AUTO_INCREMENT,
