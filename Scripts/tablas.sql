@@ -320,7 +320,8 @@ CREATE TABLE Proveedor (
     RFC VARCHAR(13),
     nombre VARCHAR(50),
     paterno VARCHAR(50),
-    materno VARCHAR(50)
+    materno VARCHAR(50),
+    fechNac DATE
 );
 
 CREATE TABLE Producto (
